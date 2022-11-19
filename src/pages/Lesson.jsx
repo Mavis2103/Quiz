@@ -5,7 +5,7 @@ const Lesson = () => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
   const onSubmit = () => {
-    if ("name" in formData && "lesson" in formData) {
+    if ("lesson" in formData) {
       navigate("/quiz", {
         state: formData,
       });
@@ -14,9 +14,9 @@ const Lesson = () => {
   const handleSelectChange = (ev) => {
     setFormData((oldData) => ({ ...oldData, lesson: ev.target.value }));
   };
-  const handleNameChange = (ev) => {
-    setFormData((oldData) => ({ ...oldData, name: ev.target.value }));
-  };
+  // const handleNameChange = (ev) => {
+  //   setFormData((oldData) => ({ ...oldData, name: ev.target.value }));
+  // };
   return (
     <div className="w-screen h-screen grid place-items-center">
       <div className="hero bg-base-200 w-3/5 shadow-2xl shadow-slate-500 rounded-2xl py-5">
@@ -28,7 +28,7 @@ const Lesson = () => {
           </div>
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
-              <div className="form-control">
+              {/* <div className="form-control">
                 <label className="label">
                   <span className="label-text">
                     Please enter your nick name:
@@ -40,7 +40,7 @@ const Lesson = () => {
                   placeholder="Name"
                   className="input input-bordered"
                 />
-              </div>
+              </div> */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">
