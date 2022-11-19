@@ -85,6 +85,25 @@ function Quiz() {
   );
   const handleEasyModeChange = () => {
     setEasyMode(!easyMode);
+    if (!easyMode) {
+      setQuestions((oldQ) => {
+        oldQ.forEach((q) => {
+          const keysInCorrect = Object.keys(q).filter(
+            (key) => ["a", "b", "c"].includes(key) && q[key] !== q["correct"]
+          );
+          q.disabled =
+            keysInCorrect[Math.floor(Math.random() * keysInCorrect.length)];
+        });
+        return [...oldQ];
+      });
+    } else {
+      setQuestions((oldQ) => {
+        oldQ.forEach((q) => {
+          Reflect.deleteProperty(q, "disabled");
+        });
+        return [...oldQ];
+      });
+    }
   };
   const onReview = () => {
     setCurrentQ(0);
@@ -124,45 +143,31 @@ function Quiz() {
               </label>
             </div>
           </div>
-          <div className="form-control bg-white mb-3 p-3 rounded-xl">
-            <label className="label cursor-pointer justify-start">
-              <input
-                type="radio"
-                name={`item-${currentQ}`}
-                value={questions[currentQ]?.a}
-                checked={select?.[currentQ] === questions[currentQ]?.a}
-                className="radio checked:bg-blue-500 mr-5"
-                onChange={handleSelect(currentQ)}
-              />
-              <span className="label-text">{questions[currentQ]?.a}</span>
-            </label>
-          </div>
-          <div className="form-control bg-white mb-3 p-3 rounded-xl">
-            <label className="label cursor-pointer justify-start">
-              <input
-                type="radio"
-                name={`item-${currentQ}`}
-                value={questions[currentQ]?.b}
-                checked={select?.[currentQ] === questions[currentQ]?.b}
-                className="radio checked:bg-blue-500 mr-5"
-                onChange={handleSelect(currentQ)}
-              />
-              <span className="label-text">{questions[currentQ]?.b}</span>
-            </label>
-          </div>
-          <div className="form-control bg-white mb-3 p-3 rounded-xl">
-            <label className="label cursor-pointer justify-start">
-              <input
-                type="radio"
-                name={`item-${currentQ}`}
-                value={questions?.[currentQ]?.c}
-                checked={select?.[currentQ] === questions[currentQ]?.c}
-                className="radio checked:bg-blue-500 mr-5"
-                onChange={handleSelect(currentQ)}
-              />
-              <span className="label-text">{questions[currentQ]?.c}</span>
-            </label>
-          </div>
+          {["a", "b", "c"].map(
+            (ele) =>
+              ele !== questions[currentQ]?.disabled && (
+                <div
+                  key={ele}
+                  className="form-control bg-white mb-3 p-3 rounded-xl"
+                >
+                  <label className="label cursor-pointer justify-start">
+                    <input
+                      type="radio"
+                      name={`item-${currentQ}`}
+                      value={questions[currentQ]?.[ele]}
+                      checked={
+                        select?.[currentQ] === questions[currentQ]?.[ele]
+                      }
+                      className="radio checked:bg-blue-500 mr-5"
+                      onChange={handleSelect(currentQ)}
+                    />
+                    <span className="label-text">
+                      {questions[currentQ]?.[ele]}
+                    </span>
+                  </label>
+                </div>
+              )
+          )}
           {!completed && (
             <>
               <button
