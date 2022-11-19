@@ -2,6 +2,7 @@ import axios from "axios";
 import { AES, enc, mode, format } from "crypto-js";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import { getQuestion } from "../api/requests";
 
 const listLessons = [5, 3, 4, 2];
 function Quiz() {
@@ -14,18 +15,7 @@ function Quiz() {
   const navigate = useNavigate();
   const result = useRef({ score: 0, accuracy: 0 });
   useEffect(() => {
-    axios
-      .get(
-        `http://app.weczs.xyz:8080/api/v1/quizzes/${
-          listLessons[state?.lesson ?? listLessons.length - 1]
-        }/questions`
-      )
-      .then((rs) => {
-        setQuestions(rs.data.questions);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getQuestion(state.lesson, (res) => setQuestions(res.data))
   }, []);
   const selected = useMemo(
     () => questions.filter((q) => q?.status).length + 1, //default is selected question 1
@@ -129,7 +119,7 @@ function Quiz() {
         <div className="px-8 pb-5 text-end w-full">
           <div className="md:flex md:justify-between">
             <h1 className="text-2xl font-bold mb-5 text-start">
-              <span>Question {currentQ}: </span>
+              <span>Question {currentQ + 1}: </span>
               {questions[currentQ]?.q}
             </h1>
             <div className="form-control">
@@ -210,7 +200,7 @@ function Quiz() {
                 }`}
                 onClick={() => setCurrentQ(id)}
               >
-                {id}
+                {id + 1}
               </nav>
             )
           )}
