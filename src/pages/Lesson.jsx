@@ -1,8 +1,21 @@
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import {
+  getLessons
+} from "../api/requests";
 
 const Lesson = () => {
   const [formData, setFormData] = useState({});
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    getLessons((res) => setLessons(res.data))
+    return () => {
+
+    };
+  })
+
   const navigate = useNavigate();
   const onSubmit = () => {
     if ("lesson" in formData) {
@@ -56,9 +69,9 @@ const Lesson = () => {
                     <option disabled value={0}>
                       Pick one
                     </option>
-                    <option value={0}>[1] English 100 Basic words</option>
-                    <option value={1}>[2] DDD common endings</option>
-                    <option value={2}>[3] DDD all in action</option>
+                    {lessons.map((item, index) => (
+                      <option key={index} value={item.id}>[{index+1}] {item.name}</option>
+                    ))}
                   </select>
                   {/* <label className="label">
                     <span className="label-text-alt">Alt label</span>
