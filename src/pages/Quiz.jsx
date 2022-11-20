@@ -71,7 +71,7 @@ function Quiz() {
         setCompleted(true);
       }
     },
-    [currentQ]
+    [currentQ, questions]
   );
   const handleEasyModeChange = () => {
     setEasyMode(!easyMode);
