@@ -15,7 +15,7 @@ function Quiz() {
   const navigate = useNavigate();
   const result = useRef({ score: 0, accuracy: 0 });
   useEffect(() => {
-    getQuestion(state.lesson, (res) => setQuestions(res.data))
+    getQuestion(state.lesson, (res) => setQuestions(res.data));
   }, []);
   const selected = useMemo(
     () => questions.filter((q) => q?.status).length + 1, //default is selected question 1
@@ -97,6 +97,7 @@ function Quiz() {
   };
   const onReview = () => {
     setCurrentQ(0);
+    setCompleted(false);
     setSelect({});
     result.current = {
       score: 0,

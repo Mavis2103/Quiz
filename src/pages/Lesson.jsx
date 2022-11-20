@@ -1,20 +1,16 @@
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
-import {
-  getLessons
-} from "../api/requests";
+import { getLessons } from "../api/requests";
 
 const Lesson = () => {
   const [formData, setFormData] = useState({});
   const [lessons, setLessons] = useState([]);
 
   useEffect(() => {
-    getLessons((res) => setLessons(res.data))
-    return () => {
-
-    };
-  })
+    getLessons((res) => setLessons(res.data));
+    return () => {};
+  });
 
   const navigate = useNavigate();
   const onSubmit = () => {
@@ -32,7 +28,7 @@ const Lesson = () => {
   // };
   return (
     <div className="w-screen h-screen grid place-items-center">
-      <div className="hero bg-base-200 w-3/5 shadow-2xl shadow-slate-500 rounded-2xl py-5">
+      <div className="hero bg-base-200 w-4/5 md:w-3/5 shadow-2xl shadow-slate-500 rounded-2xl py-5">
         <div className="hero-content w-full flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl font-bold">Der Die Das: Booster</h1>
@@ -70,7 +66,9 @@ const Lesson = () => {
                       Pick one
                     </option>
                     {lessons.map((item, index) => (
-                      <option key={index} value={item.id}>[{index+1}] {item.name}</option>
+                      <option key={index} value={item.id}>
+                        [{index + 1}] {item.name}
+                      </option>
                     ))}
                   </select>
                   {/* <label className="label">
